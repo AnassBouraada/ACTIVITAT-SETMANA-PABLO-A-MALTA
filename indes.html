@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pel·lícules</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .pelicula {
+            width: 200px;
+            height: 400px;
+            margin: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+    
+        .pelicula img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+    
+        .pelicula h2 {
+            font-size: 18px;
+            color: #333;
+            margin: 10px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        #buttons  button{
+            margin-bottom: 10px;
+            margin-right: 10px;
+        }
+
+        #filtrarPerTitol, #titolNovaPelicula {
+            padding: 8px;
+            width: 200px;
+            margin-right: 10px;
+        }
+
+        button {
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            cursor: pointer;
+            padding: 8px 16px;
+        }
+
+        button:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Estilo para los contenedores que envuelven los inputs y botones */
+        .container > div {
+            display: flex;
+            align-items: center;
+        }
+    </style>      
+</head>
+<body>
+    <div class="container">
+        <div>
+            <input id="filtrarPerTitol" placeholder="Introdueix el títol">
+            <button onclick="filtrarPerTitulo(document.getElementById('filtrarPerTitol').value)">Filtrar</button>  
+        </div>
+        <div>
+            <input id="titolNovaPelicula" placeholder="Afegeix el titol de la nova pelicula">
+            <button onclick="afegirPelicules(document.getElementById('titolNovaPelicula').value)">Afegeix</button>    
+        </div>
+    </div>
+    <div class="container" id="pelicules-container"></div>
+    <script src="api.js"></script>
+</body>
+</html>
