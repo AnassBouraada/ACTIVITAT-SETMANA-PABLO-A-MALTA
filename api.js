@@ -1,5 +1,7 @@
-async function obtenirDadesPelicules() {
-  await fetch('https://www.omdbapi.com/?apikey=ed8c126a&s=movie&page=1')
+let numPage = 1;
+
+async function obtenirDadesPelicules(numPage) {
+  await fetch(`https://www.omdbapi.com/?apikey=ed8c126a&s=movie&page=${numPage}`)
     .then(response => {
       if (!response.ok) {
         throw new Error('Error de xarxa: ' + response.statusText);
@@ -14,7 +16,6 @@ async function obtenirDadesPelicules() {
       pelicules.forEach(pelicula => {
         // Creem una nova div per a cada pel·lícula
         const divPelicula = document.createElement('div');
-        divPelicula.classList.add('pelicula');
         divPelicula.id = `pelicula-${pelicula.imdbID}`; // Agregamos un ID único para cada película
 
         // Afegim la imatge de la pel·lícula
@@ -27,6 +28,16 @@ async function obtenirDadesPelicules() {
         const name = document.createElement('h2');
         name.textContent = pelicula.Title;
         divPelicula.appendChild(name);
+
+        console.log(name.textContent.length);
+          // si la longitud del titol es mayor a 16 caracteres, se le añade el estilo de la clase pelicula-larga
+        if (name.textContent.length > 16) {
+          divPelicula.classList.add('pelicula-larga');
+          divPelicula.classList.remove('pelicula');
+        } else {
+          divPelicula.classList.add('pelicula');
+        }
+
 
         const buttons = document.createElement('div');
 
@@ -102,20 +113,33 @@ function afegirPelicules(titolPelicula) {
   titol.textContent = titolPelicula;
   novaPelicula.appendChild(titol);
 
+  // si la longitud del titol es mayor a 16 caracteres, se le añade el estilo de la clase pelicula-larga
+  if (titolPelicula.length > 16) {
+    novaPelicula.classList.add('pelicula-larga');
+    novaPelicula.classList.remove('pelicula');
+  }
+
+  const buttons = document.createElement('div');
+
+  buttons.id = 'buttons';
+
+  novaPelicula.appendChild(buttons);
+
   const editar = document.createElement('button');
+  editar.style = 'background-color: green';
   editar.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M7.127 22.562l-7.127 1.438 1.438-7.128 5.689 5.69zm1.414-1.414l11.228-11.225-5.69-5.692-11.227 11.227 5.689 5.69zm9.768-21.148l-2.816 2.817 5.691 5.691 2.816-2.819-5.691-5.689z"/></svg>';
   editar.onclick = () => {
     modificarNomPelicula(novaPelicula.id);
   }
-  novaPelicula.appendChild(editar)
+  buttons.appendChild(editar)
 
   const eliminar = document.createElement('button');
   eliminar.style = 'background-color: red';
   eliminar.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>';
   eliminar.onclick = () => {
-    eliminarPelicula(divPelicula.id);
+    eliminarPelicula(novaPelicula.id);
   }
-  novaPelicula.appendChild(eliminar);
+  buttons.appendChild(eliminar);
 
 
   document.getElementById('pelicules-container').appendChild(novaPelicula);
@@ -131,6 +155,12 @@ function eliminarPelicula(idPeliculaEliminar) {
 
 }
 
+function mostrarMesPelicules() {
+
+  obtenirDadesPelicules(++numPage);
+
+}
+
 
 // Cridar a la funció per obtenir les dades de les pel·lícules
-obtenirDadesPelicules();
+obtenirDadesPelicules(numPage);
